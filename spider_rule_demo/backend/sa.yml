@@ -1,0 +1,4 @@
+mongo:
+  uri: 'mongodb://sa.mongos.pub.spider:vUfYVimomzJ97gzHeXQ4xNKb7WJoQ2Uz@pub.mongos.sa.nb.com:27017/?authSource=admin'
+  db: spider_i18n
+  custom_rules: custom_rules
