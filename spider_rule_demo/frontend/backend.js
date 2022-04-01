@@ -14,7 +14,7 @@ var App = {
             crawl_name: null,
             current_callback: null,
             output: null,
-            crawl_id:null,
+            crawl_id: null,
             method_list: ['post', 'get'],
             tableData: []
 
@@ -66,21 +66,20 @@ var App = {
                 rule_name: this.rule_name,
                 exp: this.exp,
                 extract_method: this.extract_method,
-                crawl_name:this.crawl_name,
-                current_callback:this.current_callback,
-                output:this.output,
-                extract_type:this.extract_type,
-                crawl_id:this.crawl_id,
-                content_type:this.content_type,
-                id_to_update:this.id_to_update
+                crawl_name: this.crawl_name,
+                current_callback: this.current_callback,
+                output: this.output,
+                extract_type: this.extract_type,
+                crawl_id: this.crawl_id,
+                content_type: this.content_type,
+                id_to_update: this.id_to_update
             }
             console.log(_data)
             axios.post(host + '/api/update1', _data).then((response) => {
                 success = response.data['success']
                 if (success) {
                     this.search()
-                    this.update_dialog = false.
-                    return
+                    this.update_dialog = false.return
                 } else {
                     this.$notify({
                         title: 'update Fail',
@@ -111,6 +110,36 @@ var App = {
                 })
             }
 
+        },
+        check_info(index, row) {
+            console.log(index, row)
+            if (!row['rules']['url'] || !row['parse']['crawl']['exp']) {
+                this.$message.error('Wrong data')
+                return
+            }
+            axios.post("http://rule-checker.prod.svc.k8sc7.sa.nb.com/rule/check", {
+                url: row['rules']['url'],
+                headers: row['rules']['headers'],
+                xpath:row['parse']['crawl']['exp']
+            }).then((response) => {
+                data = response.data
+                success = data['success']
+                if (success) {
+                    this.$message({
+                        type: 'success',
+                        message: 'Xpath is right'
+                    })
+                    return
+                } else {
+                    this.$message.error({
+                        type: 'success',
+                        message: data['msg']
+                    })
+                    return
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
         }
     }
 };
