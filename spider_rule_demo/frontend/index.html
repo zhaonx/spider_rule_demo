@@ -114,9 +114,9 @@
                 <el-table-column prop="parse.crawl.current_callback" label="current_callback" width="150"></el-table-column>
                 <el-table-column prop="parse.crawl.output" label="output" width="100"></el-table-column>
 
-<!--                <el-table-column v-if="parse.crawl" v-for="item in parse.crawl" label="crawl" :key="item" :property="item">-->
-<!--                    <el-table-column prop="item.exp" label="exp" width="120"></el-table-column>-->
-<!--                </el-table-column>-->
+                <!--                <el-table-column v-if="parse.crawl" v-for="item in parse.crawl" label="crawl" :key="item" :property="item">-->
+                <!--                    <el-table-column prop="item.exp" label="exp" width="120"></el-table-column>-->
+                <!--                </el-table-column>-->
 
                 <el-table-column label="Action">
                     <template v-slot="scope">
@@ -135,6 +135,14 @@
                                 @click="delete_info(scope.$index, scope.row)"
                         >
                             Delete
+                        </el-button>
+                        <el-button
+                                type="primary"
+                                size="small"
+                                round
+                                @click="check_info(scope.$index, scope.row)"
+                        >
+                            Check
                         </el-button>
                     </template>
                 </el-table-column>
