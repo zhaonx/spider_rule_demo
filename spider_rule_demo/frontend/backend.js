@@ -1,4 +1,7 @@
 const host = 'http://127.0.0.1:7788'
+const handleChange = (val) => {
+    console.log(val)
+}
 var App = {
     data() {
         return {
@@ -16,6 +19,9 @@ var App = {
             output: null,
             crawl_id: null,
             method_list: ['post', 'get'],
+            js: false,
+            drawer: false,
+            check_result:[],
             tableData: []
 
         };
@@ -59,6 +65,7 @@ var App = {
             this.update_dialog = true
 
         },
+
         do_update_seed() {
             const _data = {
                 method: this.method,
@@ -79,7 +86,8 @@ var App = {
                 success = response.data['success']
                 if (success) {
                     this.search()
-                    this.update_dialog = false.return
+                    this.update_dialog = false
+                    return
                 } else {
                     this.$notify({
                         title: 'update Fail',
@@ -111,31 +119,34 @@ var App = {
             }
 
         },
+        handleClose(){
+            this.drawer = false
+        },
         check_info(index, row) {
             console.log(index, row)
             if (!row['rules']['url'] || !row['parse']['crawl']['exp']) {
                 this.$message.error('Wrong data')
                 return
             }
-            axios.post("http://rule-checker.prod.svc.k8sc7.sa.nb.com/rule/check", {
+            params = {
                 url: row['rules']['url'],
                 headers: row['rules']['headers'],
-                xpath:row['parse']['crawl']['exp']
-            }).then((response) => {
+                xpath: row['parse']['crawl']['exp']
+            }
+            if (this.js){
+                params['js'] = 1
+            }
+            axios.post("http://rule-checker.prod.svc.k8sc7.sa.nb.com/rule/check", params).then((response) => {
                 data = response.data
+                this.check_result = data['data']
+                console.log(data)
                 success = data['success']
-                if (success) {
-                    this.$message({
-                        type: 'success',
-                        message: 'Xpath is right'
-                    })
-                    return
-                } else {
+                this.drawer = true
+                if (!success) {
                     this.$message.error({
                         type: 'success',
                         message: data['msg']
                     })
-                    return
                 }
             }).catch((err) => {
                 console.log(err)
