@@ -41,13 +41,33 @@
 </head>
 <body>
 <div id="app">
-
+    <el-drawer
+            v-model="drawer"
+            direction="rtl"
+            :with-header="false"
+            :before-close="handleClose"
+    >
+        <el-table :data="check_result" style="width: 100%">
+            <el-table-column type="expand">
+                <template #default="props">
+                    <p>{{ props.row.news_url }}</p>
+                </template>
+            </el-table-column>
+            <el-table-column label="Title" prop="title"></el-table-column>
+        </el-table>
+    </el-drawer>
     <el-container>
         <el-header>
             Spider Rule Manager
         </el-header>
         <el-main>
-
+            <el-row type="flex" class="row-bg" justify="center">
+                <el-form>
+                    <el-form-item label="Js">
+                        <el-switch v-model="js"></el-switch>
+                    </el-form-item>
+                </el-form>
+            </el-row>
             <el-dialog title="Update" v-model="update_dialog">
                 <el-form>
                     <el-form-item label="method">
