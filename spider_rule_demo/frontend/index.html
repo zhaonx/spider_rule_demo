@@ -41,7 +41,21 @@
 </head>
 <body>
 <div id="app">
-
+    <el-drawer
+            v-model="drawer"
+            direction="rtl"
+            :with-header="false"
+            :before-close="handleClose"
+    >
+        <el-table :data="check_result" style="width: 100%">
+            <el-table-column type="expand">
+                <template #default="props">
+                    <p>{{ props.row.news_url }}</p>
+                </template>
+            </el-table-column>
+            <el-table-column label="Title" prop="title"></el-table-column>
+        </el-table>
+    </el-drawer>
     <el-container>
         <el-header>
             Spider Rule Manager
@@ -150,21 +164,6 @@
                         >
                             Check
                         </el-button>
-                        <el-drawer
-                                v-model="drawer"
-                                direction="rtl"
-                                :with-header="false"
-                                :before-close="handleClose"
-                        >
-                            <el-table :data="check_result" style="width: 100%">
-                                <el-table-column type="expand">
-                                    <template #default="props">
-                                        <p>{{ props.row.news_url }}</p>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="Title" prop="title"></el-table-column>
-                            </el-table>
-                        </el-drawer>
                     </template>
                 </el-table-column>
             </el-table>
